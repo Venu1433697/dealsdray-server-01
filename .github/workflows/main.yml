@@ -34,6 +34,11 @@ jobs:
         key: ${{ secrets.SSH_KEY }}
         port: 22
         script: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
+          
           # Navigate to the app directory on EC2
           cd /home/ec2-user/dealsdray-server
           # Pull the latest changes from the repository
